@@ -11,23 +11,38 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody rb;
     private int count;
-
+   
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        count = 10;
+        count = 0;
         SetCountText();
         winText.text = "";
     }
 
     void FixedUpdate()
     {
-        float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        if (GameObject.FindGameObjectsWithTag("Pick Up").Length > 0)
+        {
+            float moveHorizontal = Input.GetAxis("Horizontal");
+            float moveVertical = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
 
-        rb.AddForce(movement * speed);
+            rb.AddForce(movement * speed);
+        }
+        else
+        {
+
+            float moveHorizontal = 0;
+            float moveVertical = 0;
+
+            Vector3 movement = new Vector3(moveHorizontal, 0.0f, moveVertical);
+            rb.position.Set(rb.position.x, rb.position.y,rb.position.z);
+            rb.AddForce(movement * speed);
+        }
+
+       
     }
 
     void OnTriggerEnter(Collider other)
@@ -35,7 +50,7 @@ public class PlayerController : MonoBehaviour
         if (other.gameObject.CompareTag("Pick Up"))
         {
             other.gameObject.SetActive(false);
-            count = count -1;
+            count = count +1;
             SetCountText();
         }
     }
@@ -43,9 +58,16 @@ public class PlayerController : MonoBehaviour
     void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        if (count >= 12)
+        Debug.Log(countText.text);
+        Debug.Log(GameObject.FindGameObjectsWithTag("Pick Up").Length);
+        if ( GameObject.FindGameObjectsWithTag("Pick Up").Length==0)
         {
-            winText.text = "You Win!";
+           
+            winText.text = "Win!!";
+            CancelInvoke();
+
+
         }
     }
-}
+    
+    }

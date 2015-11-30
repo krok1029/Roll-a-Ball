@@ -16,10 +16,14 @@ public class TimeCounter : MonoBehaviour {
     void timer()
     {
         timer_i += 1;
-        Debug.Log(timer_i);
+     
     }
 	
 	void Update () {
         text.text = "TIME: "+ timer_i;
+        if (GameObject.FindGameObjectsWithTag("Pick Up").Length == 0)
+        {
+            CancelInvoke();
+        }
     }
 }

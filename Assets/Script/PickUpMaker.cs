@@ -6,7 +6,7 @@ public class PickUpMaker : MonoBehaviour {
 
     public Text countText;
     public GameObject PickUp;
-    public float spawnTime = 3f; 
+    public float spawnTime = 6f; 
     public Transform Tran_CreatPoint;
     public Vector3 V3_Random;
 
@@ -20,8 +20,16 @@ public class PickUpMaker : MonoBehaviour {
                 spawnTime -= Time.deltaTime;
             }
             else {
-                GameObject PickUp_Clone = Instantiate(PickUp, V3_Random, Quaternion.identity) as GameObject;
-               spawnTime = 3.0f;
-            }
+                if (GameObject.FindGameObjectsWithTag("Pick Up").Length == 0)
+                {
+                    CancelInvoke();
+                }
+                else
+                {
+                    GameObject PickUp_Clone = Instantiate(PickUp, V3_Random, Quaternion.identity) as GameObject;
+                    spawnTime = 6.0f;
+                }
         }
+
+    }
 }
